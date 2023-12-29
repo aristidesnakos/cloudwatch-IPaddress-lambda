@@ -1,7 +1,7 @@
 import pytest
 import json
 from moto import mock_dynamodb
-from lambda_function.main import lambda_handler  # Replace 'your_module' with the actual name of your Python file
+from lambda_function.main import lambda_handler
 import boto3
 
 @pytest.fixture
@@ -51,7 +51,14 @@ def mock_env(monkeypatch, dynamodb):
     create_mock_tables(dynamodb)
 
 def test_lambda_handler_success(mock_env):
-    # Example event data
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    dynamodb.create_table(
+        TableName='YourTableNameHere',
+        KeySchema=[{'AttributeName': 'id', 'KeyType': 'HASH'}],
+        AttributeDefinitions=[{'AttributeName': 'id', 'AttributeType': 'S'}],
+        ProvisionedThroughput={'ReadCapacityUnits': 1, 'WriteCapacityUnits': 1}
+    )
+    
     event = {
         'Records': [
             {
@@ -65,15 +72,12 @@ def test_lambda_handler_success(mock_env):
         ]
     }
 
-    # Call the lambda_handler
     response = lambda_handler(event, None)
 
-    # Assertions
     assert response['statusCode'] == 200
     assert json.loads(response['body']) == 'IP addresses processed'
 
 def test_lambda_handler_failure(mock_env):
-    # Malformed event data
     event = {
         'Records': [
             {
@@ -84,9 +88,7 @@ def test_lambda_handler_failure(mock_env):
         ]
     }
 
-    # Call the lambda_handler
     response = lambda_handler(event, None)
 
-    # Assertions
     assert response['statusCode'] == 500
     assert json.loads(response['body']) == 'Error processing logs'
