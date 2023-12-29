@@ -6,11 +6,9 @@ from collections import defaultdict
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-# Load environment variables
 load_dotenv()
 IP_COUNT_TABLE = os.getenv("AWS_DYNAMO_IP_COUNT_TABLE")
 DENIED_IP_TABLE = os.getenv("AWS_DYNAMO_DENIED_IP_TABLE")
