@@ -28,4 +28,4 @@ jobs:
       run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
 
     - name: Run tests with pytest
-      run: pytest -m tests --html=report.html --self-contained-html
+      run: pytest --html=report.html --self-contained-html    
