@@ -49,10 +49,10 @@ def lambda_handler(event, context):
 
 def update_ip_count(ip_address, timestamp, table):
     try:
-        # Update or create the IP address record with new timestamp
         response = table.update_item(
             Key={'IPAddress': ip_address},
-            UpdateExpression="SET Timestamp = :t ADD HitCount :incr",
+            UpdateExpression="SET #ts = :t ADD HitCount :incr",
+            ExpressionAttributeNames={'#ts': 'Timestamp'},  # Add this line
             ExpressionAttributeValues={':t': timestamp, ':incr': 1},
             ReturnValues="UPDATED_NEW"
         )
