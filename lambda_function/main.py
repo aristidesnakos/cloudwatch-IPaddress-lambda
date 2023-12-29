@@ -27,7 +27,7 @@ def lambda_handler(event, context):
         for record in event['Records']:
             log_data = json.loads(record['Sns']['Message'])
             ip_address = log_data['httpRequest']['clientIp']
-            timestamp = log_data['timestamp']
+            timestamp = convert_to_iso_format(log_data['timestamp'])
             # Increment IP address counter and store timestamp
             update_ip_count(ip_address, timestamp, ip_count_table)
         # Check IP address counts and add to Denied IP list if they exceed the limit
@@ -79,3 +79,12 @@ def add_ip_to_denied_list(ip_address, table):
         logger.info(f"Added {ip_address} to denied list in DynamoDB: {response}")
     except Exception as e:
         logger.error(f"Error adding {ip_address} to denied list in DynamoDB: {e}")
+
+def convert_to_iso_format(timestamp_ms):
+    # Convert milliseconds to seconds
+    timestamp_s = timestamp_ms / 1000.0
+    # Convert to a datetime object
+    dt_object = datetime.fromtimestamp(timestamp_s)
+    # Convert to ISO 8601 format
+    iso_format = dt_object.isoformat()
+    return iso_format
