@@ -1,7 +1,7 @@
 import pytest
 from moto import mock_dynamodb
 import boto3
-from lambda_function.main import check_and_add_to_denied_list
+from main import check_and_add_to_denied_list
 
 # Constants for the test
 IP_COUNT_TABLE = "IpCountTable"

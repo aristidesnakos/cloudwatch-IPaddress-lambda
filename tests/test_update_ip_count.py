@@ -1,7 +1,7 @@
 import pytest
 from moto import mock_dynamodb
 import boto3
-from lambda_function.main import update_ip_count
+from main import update_ip_count
 
 @pytest.fixture
 def aws_credentials():

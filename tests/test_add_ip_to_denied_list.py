@@ -1,7 +1,7 @@
 import pytest
 import boto3
 from moto import mock_dynamodb
-from lambda_function.main import add_ip_to_denied_list
+from main import add_ip_to_denied_list
 
 @pytest.fixture
 def aws_credentials():
